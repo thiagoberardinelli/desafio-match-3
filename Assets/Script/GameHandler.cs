@@ -10,6 +10,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private int boardWidth = 10;
     [SerializeField] private int boardHeight = 10;
     [SerializeField] private BoardView boardView;
+    [SerializeField] private HudController hudController;
 
     private int selectedX, selectedY = -1;
     private bool isAnimating;
@@ -51,7 +52,11 @@ public class GameHandler : MonoBehaviour
                     else
                     {
                         List<BoardSequence> swapResult = gameController.SwapTile(selectedX, selectedY, x, y);
-                        AnimateBoard(swapResult, 0, () => isAnimating = false);
+                        AnimateBoard(swapResult, 0, () =>
+                        {
+                            hudController.ClearComboText();
+                            isAnimating = false;
+                        });
                     }
 
                     selectedX = -1;
@@ -66,19 +71,20 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    private void AnimateBoard(List<BoardSequence> boardSequences, int i, Action onComplete)
+    private void AnimateBoard(List<BoardSequence> boardSequences, int sequenceIndex, Action onComplete)
     {
         Sequence sequence = DOTween.Sequence();
 
-        BoardSequence boardSequence = boardSequences[i];
+        BoardSequence boardSequence = boardSequences[sequenceIndex];
         sequence.Append(boardView.DestroyTiles(boardSequence.matchedPosition));
         sequence.Append(boardView.MoveTiles(boardSequence.movedTiles));
         sequence.Append(boardView.CreateTile(boardSequence.addedTiles));
 
-        i++;
-        if (i < boardSequences.Count)
+        sequenceIndex++;
+        hudController.AddScore(boardSequence.matchedPosition.Count, sequenceIndex);
+        if (sequenceIndex< boardSequences.Count)
         {
-            sequence.onComplete += () => AnimateBoard(boardSequences, i, onComplete);
+            sequence.onComplete += () => AnimateBoard(boardSequences, sequenceIndex, onComplete);
         }
         else
         {
