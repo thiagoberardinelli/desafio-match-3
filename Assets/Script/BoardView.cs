@@ -7,16 +7,13 @@ using UnityEngine.UI;
 public class BoardView : MonoBehaviour
 {
     [SerializeField] private TileSpotView tileSpotPrefab;
-
     [SerializeField] private TilePrefabRepository tilePrefabRepository;
-
     [SerializeField] private GridLayoutGroup boardContainer;
 
     private TileSpotView[][] _tileSpots;
-
     private TileView[][] _tiles;
 
-    public event Action<int, int> onTileClick;
+    public event Action<int, int> OnTileClick;
 
     public void CreateBoard(List<List<Tile>> board)
     {
@@ -32,6 +29,7 @@ public class BoardView : MonoBehaviour
 
             for (int x = 0; x < board[0].Count; x++)
             {
+                // TileSpotView instantiation
                 TileSpotView tileSpot = Instantiate(tileSpotPrefab);
                 tileSpot.transform.SetParent(boardContainer.transform, false);
                 tileSpot.SetPosition(x, y);
@@ -145,6 +143,6 @@ public class BoardView : MonoBehaviour
 
     private void OnTileSpotClick(int x, int y)
     {
-        onTileClick(x, y);
+        OnTileClick?.Invoke(x, y);
     }
 }

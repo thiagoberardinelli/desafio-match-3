@@ -1,23 +1,23 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
 public class GameHandler : MonoBehaviour
 {
-    [SerializeField] private GameController gameController;
+    private GameController gameController;
 
-    [SerializeField] public int boardWidth = 10;
+    [SerializeField] private int boardWidth = 10;
+    [SerializeField] private int boardHeight = 10;
+    [SerializeField] private BoardView boardView;
 
-    [SerializeField] public int boardHeight = 10;
-
-    [SerializeField] public BoardView boardView;
+    private int selectedX, selectedY = -1;
+    private bool isAnimating;
 
     private void Awake()
     {
         gameController = new GameController();
-        boardView.onTileClick += OnTileClick;
+        boardView.OnTileClick += OnTileClick;
     }
 
     private void Start()
@@ -25,10 +25,6 @@ public class GameHandler : MonoBehaviour
         List<List<Tile>> board = gameController.StartGame(boardWidth, boardHeight);
         boardView.CreateBoard(board);
     }
-
-    private int selectedX, selectedY = -1;
-
-    private bool isAnimating;
 
     private void OnTileClick(int x, int y)
     {
@@ -55,7 +51,6 @@ public class GameHandler : MonoBehaviour
                     else
                     {
                         List<BoardSequence> swapResult = gameController.SwapTile(selectedX, selectedY, x, y);
-
                         AnimateBoard(swapResult, 0, () => isAnimating = false);
                     }
 
