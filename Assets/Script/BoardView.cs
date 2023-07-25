@@ -83,6 +83,9 @@ public class BoardView : MonoBehaviour
         for (int i = 0; i < matchedPosition.Count; i++)
         {
             Vector2Int position = matchedPosition[i];
+            TileView tileView = _tiles[position.y][position.x];
+            
+            tileView.Explode();
             Destroy(_tiles[position.y][position.x].gameObject);
             _tiles[position.y][position.x] = null;
         }
