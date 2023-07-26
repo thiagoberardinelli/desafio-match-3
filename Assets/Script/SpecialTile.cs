@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpecialTile : Tile
 {
     public int specialType;
-    
+
     public SpecialTile(Tile tile, int specialType)
     {
         id = tile.id;
@@ -14,11 +14,12 @@ public class SpecialTile : Tile
     }
 
     // Do special accordingly to tile special type
-    public List<List<bool>> DoSpecial(Vector2Int position, List<List<bool>> board)
+    public List<List<bool>> DoSpecial(Vector2Int position, List<List<bool>> board, bool horizontalMatch)
     {
         return specialType switch
         {
             0 => DoBombSpecial(position, board),
+            1 => DoLineBreakerSpecial(position, board, horizontalMatch),
             _ => board
         };
     }
@@ -38,6 +39,22 @@ public class SpecialTile : Tile
             {
                 board[y][x] = true;
             }
+        }
+
+        return board;
+    }
+
+    private List<List<bool>> DoLineBreakerSpecial(Vector2Int position, List<List<bool>> board, bool horizontalMatch)
+    {
+        if (horizontalMatch)
+        {
+            for (int i = 0; i < board[0].Count; i++) 
+                board[position.y][i] = true;
+        }
+        else
+        {
+            for (int i = 0; i < board[0].Count; i++) 
+                board[i][position.x] = true;
         }
 
         return board;

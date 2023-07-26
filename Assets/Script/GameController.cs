@@ -12,8 +12,9 @@ public class GameController
     public List<List<Tile>> StartGame(int boardWidth, int boardHeight)
     {
         _tilesTypes = new List<int> { 0, 1, 2, 3 };
-        _specialTilesTypes = new List<int> { 0 };
+        _specialTilesTypes = new List<int> { 0, 1 };
         _boardTiles = CreateBoard(boardWidth, boardHeight, _tilesTypes);
+
         CreateSpecialTile();
         
         return _boardTiles;
@@ -258,7 +259,7 @@ public class GameController
                     {
                         matchedTiles[y][x - i] = true;
                         // Updates the List<List<bool> accordingly to the SpecialTile behaviour
-                        matchedTiles = IsSpecialTile(newBoard[y][x - i], new Vector2Int(x - i, y), matchedTiles);
+                        matchedTiles = IsSpecialTile(newBoard[y][x - i], new Vector2Int(x - i, y), matchedTiles, true);
                     }
                 }
                 if (y > 1
@@ -269,7 +270,7 @@ public class GameController
                     {
                         matchedTiles[y - i][x] = true;
                         // Updates the List<List<bool> accordingly to the SpecialTile behaviour
-                        matchedTiles = IsSpecialTile(newBoard[y - i][x], new Vector2Int(x , y - i), matchedTiles);
+                        matchedTiles = IsSpecialTile(newBoard[y - i][x], new Vector2Int(x , y - i), matchedTiles, false);
                     }
                 }
             }
@@ -278,11 +279,11 @@ public class GameController
         return matchedTiles;
     }
 
-    private static List<List<bool>> IsSpecialTile(Tile tile, Vector2Int position, List<List<bool>> board)
+    private static List<List<bool>> IsSpecialTile(Tile tile, Vector2Int position, List<List<bool>> board, bool horizontalMatch)
     {
         SpecialTile specialTile = tile as SpecialTile;
 
-        return specialTile == null ? board : specialTile.DoSpecial(position, board);
+        return specialTile == null ? board : specialTile.DoSpecial(position, board, horizontalMatch);
     }
 
     private static List<List<Tile>> CopyBoard(List<List<Tile>> boardToCopy)

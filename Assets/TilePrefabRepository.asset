@@ -23,3 +23,4 @@ MonoBehaviour:
   - {r: 0.4156863, g: 0, b: 0.6313726, a: 1}
   specialTilePrefabList:
   - {fileID: -3413119326413735690, guid: 6f8413a704351fa4cb8b3f7c3a5d5c1a, type: 3}
+  - {fileID: -3413119326413735690, guid: ec878735f7116ca4c80b30217fce726a, type: 3}
