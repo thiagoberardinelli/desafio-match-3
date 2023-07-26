@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8253062065937978491}
   - component: {fileID: 6531493210781432195}
   - component: {fileID: 9015394530975744411}
-  - component: {fileID: 8595690258952077401}
+  - component: {fileID: -3413119326413735690}
   m_Layer: 5
-  m_Name: BlueTile
+  m_Name: BombTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,16 +59,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.007103254, b: 0.6037736, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 43018f3d56d835f4bb91da461a238748, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8595690258952077401
+--- !u!114 &-3413119326413735690
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,8 +85,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6588062894895293356}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3fed8ab3f2075b44299f89a74779b00e, type: 3}
+  m_Script: {fileID: 11500000, guid: dcdb39acbef44fc88fd2d612cf4f83a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  image: {fileID: 9015394530975744411}
   particleSystemPrefab: {fileID: 19800000, guid: 83cd9cc9f9c88824ba18dc59b05ae328, type: 3}
-  effectColor: {r: 0, g: 0.007843138, b: 0.6039216, a: 1}
+  effectColor: {r: 1, g: 1, b: 1, a: 1}

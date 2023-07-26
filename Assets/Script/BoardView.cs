@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,11 +41,24 @@ public class BoardView : MonoBehaviour
                 int tileTypeIndex = board[y][x].type;
                 if (tileTypeIndex > -1)
                 {
-                    TileView tilePrefab = tilePrefabRepository.tileTypePrefabList[tileTypeIndex];
-                    TileView tile = Instantiate(tilePrefab);
-                    tileSpot.SetTile(tile);
+                    TileView tileView;
 
-                    _tiles[y][x] = tile;
+                    SpecialTile specialTile = board[y][x] as SpecialTile;
+
+                    if (specialTile != null)
+                    {
+                        SpecialTileView specialTileView = tilePrefabRepository.specialTilePrefabList[specialTile.specialType];
+                        tileView = Instantiate(specialTileView);
+                        tileView.SetColor(tilePrefabRepository.colors[specialTile.type]);
+                    }
+                    else
+                    {
+                        tileView = Instantiate(tilePrefabRepository.tileViewPrefab);
+                        tileView.SetColor(tilePrefabRepository.colors[board[y][x].type]);
+                    }
+                    
+                    tileSpot.SetTile(tileView);
+                    _tiles[y][x] = tileView;
                 }
             }
         }
@@ -131,8 +145,9 @@ public class BoardView : MonoBehaviour
 
             TileSpotView tileSpot = _tileSpots[position.y][position.x];
 
-            TileView tilePrefab = tilePrefabRepository.tileTypePrefabList[addedTileInfo.type];
+            TileView tilePrefab = tilePrefabRepository.tileViewPrefab;
             TileView tile = Instantiate(tilePrefab);
+            tile.SetColor(tilePrefabRepository.colors[addedTileInfo.type]);
             tileSpot.SetTile(tile);
 
             _tiles[position.y][position.x] = tile;
