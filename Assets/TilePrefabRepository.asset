@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a395bf00bbfe84e8896c915a55911a, type: 3}
   m_Name: TilePrefabRepository
   m_EditorClassIdentifier: 
-  tileTypePrefabList:
-  - {fileID: 464270069896909277, guid: 46f0c7ed21cef764296d7c156b96da85, type: 3}
-  - {fileID: 8595690258952077401, guid: a6fb14bf42a1f2d46ab2f40ba89df970, type: 3}
-  - {fileID: 4993933492126411208, guid: e79087baeae77814fb7d024ccc13c2a6, type: 3}
-  - {fileID: -8652353426167559266, guid: dc3453aa1a3bbbd46aa72555404acfd6, type: 3}
-  - {fileID: 5278397621564676923, guid: dbb3cd93728abaa43a394a4320380812, type: 3}
-  - {fileID: -6353420336536694144, guid: 90b6f1c7b50730c47ba7294b1f2bbbd4, type: 3}
-  - {fileID: 2930933713693014155, guid: 21d43d9bcb34c784aba98010c0ad6084, type: 3}
+  tileViewPrefab: {fileID: 464270069896909277, guid: 6da72f952b966504ca2d1a009df6dfa4, type: 3}
+  colors:
+  - {r: 0.69803923, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0.7960785, b: 0, a: 1}
+  - {r: 0, g: 0.007843138, b: 0.6039216, a: 1}
+  - {r: 0.16470589, g: 0.7058824, b: 0, a: 1}
+  - {r: 0.9058824, g: 0.3803922, b: 0, a: 1}
+  - {r: 0.76470596, g: 0, b: 0.6156863, a: 1}
+  - {r: 0.4156863, g: 0, b: 0.6313726, a: 1}
+  specialTilePrefabList:
+  - {fileID: -3413119326413735690, guid: 6f8413a704351fa4cb8b3f7c3a5d5c1a, type: 3}
