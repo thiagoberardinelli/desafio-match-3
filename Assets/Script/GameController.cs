@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Script;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,11 +13,11 @@ public class GameController
     public List<List<Tile>> StartGame(int boardWidth, int boardHeight)
     {
         _tilesTypes = new List<int> { 0, 1, 2, 3 };
-        _specialTilesTypes = new List<int> { 0, 1 };
+        _specialTilesTypes = new List<int> { 0, 1, 2 };
         _boardTiles = CreateBoard(boardWidth, boardHeight, _tilesTypes);
 
         CreateSpecialTile();
-        
+
         return _boardTiles;
     }
     
@@ -259,7 +260,9 @@ public class GameController
                     {
                         matchedTiles[y][x - i] = true;
                         // Updates the List<List<bool> accordingly to the SpecialTile behaviour
-                        matchedTiles = IsSpecialTile(newBoard[y][x - i], new Vector2Int(x - i, y), matchedTiles, true);
+                        MatchInfo matchInfo = new MatchInfo(newBoard[y][x - i], new Vector2Int(x - i, y), newBoard,
+                            matchedTiles, true);
+                        matchedTiles = IsSpecialTile(matchInfo);
                     }
                 }
                 if (y > 1
@@ -269,8 +272,10 @@ public class GameController
                     for (int i = 0; i <= 2; i++)
                     {
                         matchedTiles[y - i][x] = true;
+                        MatchInfo matchInfo = new MatchInfo(newBoard[y - i][x], new Vector2Int(x, y - i), newBoard,
+                            matchedTiles, false);
                         // Updates the List<List<bool> accordingly to the SpecialTile behaviour
-                        matchedTiles = IsSpecialTile(newBoard[y - i][x], new Vector2Int(x , y - i), matchedTiles, false);
+                        matchedTiles = IsSpecialTile(matchInfo);
                     }
                 }
             }
@@ -279,11 +284,11 @@ public class GameController
         return matchedTiles;
     }
 
-    private static List<List<bool>> IsSpecialTile(Tile tile, Vector2Int position, List<List<bool>> board, bool horizontalMatch)
+    private static List<List<bool>> IsSpecialTile(MatchInfo matchInfo)
     {
-        SpecialTile specialTile = tile as SpecialTile;
+        SpecialTile specialTile = matchInfo.tile as SpecialTile;
 
-        return specialTile == null ? board : specialTile.DoSpecial(position, board, horizontalMatch);
+        return specialTile == null ? matchInfo.matchedBoard : specialTile.DoSpecial(matchInfo);
     }
 
     private static List<List<Tile>> CopyBoard(List<List<Tile>> boardToCopy)

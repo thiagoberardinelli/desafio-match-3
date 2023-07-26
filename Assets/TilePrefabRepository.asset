@@ -24,3 +24,4 @@ MonoBehaviour:
   specialTilePrefabList:
   - {fileID: -3413119326413735690, guid: 6f8413a704351fa4cb8b3f7c3a5d5c1a, type: 3}
   - {fileID: -3413119326413735690, guid: ec878735f7116ca4c80b30217fce726a, type: 3}
+  - {fileID: -3413119326413735690, guid: 6d30d7882e88bbf47ab206d62247c737, type: 3}
