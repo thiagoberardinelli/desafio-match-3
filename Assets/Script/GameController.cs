@@ -16,7 +16,7 @@ public class GameController
         _specialTilesTypes = new List<int> { 0, 1, 2 };
         _boardTiles = CreateBoard(boardWidth, boardHeight, _tilesTypes);
 
-        CreateSpecialTile();
+        CreateSpecialTile(new Vector2Int(-1, -1), _boardTiles);
 
         return _boardTiles;
     }
@@ -46,13 +46,32 @@ public class GameController
         return board;
     }
 
-    private void CreateSpecialTile()
+    private void CreateSpecialTile(Vector2Int randomizedPosition, List<List<Tile>> board, int randomizedType = -1)
     {
-        int randomY = Random.Range(0, _boardTiles.Count);
-        int randomX = Random.Range(0, _boardTiles[0].Count);
-        Tile tile = _boardTiles[randomY][randomX];
-        int specialType = Random.Range(0, _specialTilesTypes.Count);
-        _boardTiles[randomY][randomX] = new SpecialTile(tile, specialType);
+        // if x or y position is equal to -1, randomize a new position
+        if (randomizedPosition.x == -1 || randomizedPosition.y == -1)
+        {
+            randomizedPosition.y = Random.Range(0, _boardTiles.Count);
+            randomizedPosition.x = Random.Range(0, _boardTiles[0].Count);
+        }
+
+        Tile tile = board[randomizedPosition.y][randomizedPosition.x];
+        
+        // if randomizedType is equal to -1, randomize a special type
+        int specialType = randomizedType == -1 ? Random.Range(0, _specialTilesTypes.Count) : randomizedType;
+        
+        board[randomizedPosition.y][randomizedPosition.x] = new SpecialTile(tile, specialType);
+    }
+
+    private List<AddedTileInfo> AddNewSpecialTile(List<AddedTileInfo> addedTiles, List<List<Tile>> newBoard)
+    {
+        int index = Random.Range(0, addedTiles.Count);
+        AddedTileInfo addedTileInfo = addedTiles[index];
+        Vector2Int randomizedPosition = addedTileInfo.position;
+        addedTileInfo.specialType = Random.Range(0, _specialTilesTypes.Count);
+            
+        CreateSpecialTile(randomizedPosition, newBoard, addedTileInfo.specialType);
+        return addedTiles;
     }
 
     private void CheckInitialMatches(List<int> tileTypes, int x, int y, List<List<Tile>> board)
@@ -212,9 +231,11 @@ public class GameController
                 if (newBoard[y][x].type == -1)
                 {
                     int tileType = Random.Range(0, _tilesTypes.Count);
+                   
                     Tile tile = newBoard[y][x];
                     tile.id = _tileCount++;
                     tile.type = _tilesTypes[tileType];
+                    
                     addedTiles.Add(new AddedTileInfo
                     {
                         position = new Vector2Int(x, y),
@@ -224,6 +245,7 @@ public class GameController
             }
         }
 
+        return AddNewSpecialTile(addedTiles, newBoard);
         return addedTiles;
     }
 
@@ -287,7 +309,6 @@ public class GameController
     private static List<List<bool>> IsSpecialTile(MatchInfo matchInfo)
     {
         SpecialTile specialTile = matchInfo.tile as SpecialTile;
-
         return specialTile == null ? matchInfo.matchedBoard : specialTile.DoSpecial(matchInfo);
     }
 

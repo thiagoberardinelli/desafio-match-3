@@ -10,7 +10,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private int boardWidth = 10;
     [SerializeField] private int boardHeight = 10;
     [SerializeField] private BoardView boardView;
-    [SerializeField] private HudController hudController;
+    [SerializeField] private ScoreController hudController;
 
     private int selectedX, selectedY = -1;
     private bool isAnimating;

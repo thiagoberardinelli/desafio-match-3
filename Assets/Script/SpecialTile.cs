@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SpecialTile : Tile
 {
-    public int specialType;
+    public readonly int specialType;
 
     public SpecialTile(Tile tile, int specialType)
     {

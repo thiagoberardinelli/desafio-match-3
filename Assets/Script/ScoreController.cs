@@ -1,8 +1,7 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
-public class HudController : MonoBehaviour
+public class ScoreController : MonoBehaviour
 {
     [Header("Score References")]
     [SerializeField] private TextMeshProUGUI scoreText;
@@ -11,14 +10,14 @@ public class HudController : MonoBehaviour
     [Header("Combo References")] [Space(2.5F)]
     [SerializeField] private TextMeshProUGUI comboText;
 
-    private int _score;
+    public static int score;
 
-    private void Start() => scoreText.text = $"Score: {_score}";
+    private void Start() => scoreText.text = $"Score: {score}";
     
     public void AddScore(int numberOfTiles, int scoreMultiplier)
     {
-        _score += pointsPerTile * numberOfTiles * scoreMultiplier;
-        scoreText.text = $"Score: {_score}";
+        score += pointsPerTile * numberOfTiles * scoreMultiplier;
+        scoreText.text = $"Score: {score}";
 
         if (scoreMultiplier > 1)
             comboText.text = $"Combo x{scoreMultiplier}";

@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
-using System.Security.Principal;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -143,17 +143,27 @@ public class BoardView : MonoBehaviour
             AddedTileInfo addedTileInfo = addedTiles[i];
             Vector2Int position = addedTileInfo.position;
 
+            TileView tileView;
             TileSpotView tileSpot = _tileSpots[position.y][position.x];
 
-            TileView tilePrefab = tilePrefabRepository.tileViewPrefab;
-            TileView tile = Instantiate(tilePrefab);
-            tile.SetColor(tilePrefabRepository.colors[addedTileInfo.type]);
-            tileSpot.SetTile(tile);
+            if (addedTileInfo.specialType != -1)
+            {
+                SpecialTileView specialTileView = tilePrefabRepository.specialTilePrefabList[addedTileInfo.specialType];
+                tileView = Instantiate(specialTileView);
+            }
+            else
+            {
+                TileView tilePrefab = tilePrefabRepository.tileViewPrefab;
+                tileView = Instantiate(tilePrefab);
+            }
 
-            _tiles[position.y][position.x] = tile;
+            tileView.SetColor(tilePrefabRepository.colors[addedTileInfo.type]);
+            tileSpot.SetTile(tileView);
 
-            tile.transform.localScale = Vector2.zero;
-            seq.Join(tile.transform.DOScale(1.0f, 0.2f));
+            _tiles[position.y][position.x] = tileView;
+
+            tileView.transform.localScale = Vector2.zero;
+            seq.Join(tileView.transform.DOScale(1.0f, 0.2f));
         }
 
         return seq;

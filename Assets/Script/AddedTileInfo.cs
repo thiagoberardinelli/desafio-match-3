@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
-public struct AddedTileInfo
+public class AddedTileInfo
 {
     public Vector2Int position;
     public int type;
+    public int specialType = -1;
 }
