@@ -32,7 +32,8 @@ public class ScoreController : MonoBehaviour
     public bool ReachedScoreThreshold()
     {
         bool reachedThreshold = _score >= _currentThreshold;
-        _currentThreshold += pointsToReachScore + _score;
+        _currentThreshold = pointsToReachScore + _score;
+        Debug.Log(_currentThreshold);
 
         return reachedThreshold;
     }
