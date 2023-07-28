@@ -170,6 +170,7 @@ public class BoardView : MonoBehaviour
         
         specialTileView.SetColor(tilePrefabRepository.colors[specialTile.type]);
         tileSpot.SetTile(specialTileView);
+        // Do the new spawn effect
         specialTileView.Spawn();
         _tiles[position.y][position.x] = specialTileView;
     }

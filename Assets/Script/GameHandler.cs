@@ -58,8 +58,7 @@ public class GameHandler : MonoBehaviour
                             scoreController.ClearComboText();
                             isAnimating = false;
                             
-                            // Se, no fim do combo, voce passou do threshold invoca a assim passando o boardview
-                            // Porque eu preciso do boardView? Para pode fazer a parte visual alem da logica porque no GC eu nao tenho como
+                            // If after the sequence is done, the new special tile is reached invoke the action
                             if (scoreController.ReachedScoreThreshold())
                                 createSpecialTile.Invoke(boardView);
                         });

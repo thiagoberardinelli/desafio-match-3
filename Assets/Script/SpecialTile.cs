@@ -17,9 +17,6 @@ public class SpecialTile : Tile
     // Do special accordingly to tile special type
     public List<List<bool>> DoSpecial(MatchInfo matchInfo)
     {
-        // // For test purposes:
-        // return DoColorCleanerSpecial(matchInfo);
-        
         return specialType switch
         {
             0 => DoBombSpecial(matchInfo),

@@ -47,6 +47,7 @@ public class GameController
         return board;
     }
 
+    // Adds the special tile to the current board
     private SpecialTile CreateSpecialTile(Vector2Int randomizedPosition, List<List<Tile>> board, int randomizedType = -1)
     {
         // if x or y position is equal to -1, randomize a new position
@@ -67,6 +68,7 @@ public class GameController
         return specialTile;
     }
 
+    // Returns the position and special tile "type" of the random tile that will be turned into a special one
     private (Vector2Int, SpecialTile specialTile) AddNewSpecialTile(List<AddedTileInfo> addedTiles, List<List<Tile>> newBoard)
     {
         int index = Random.Range(0, addedTiles.Count);
@@ -150,7 +152,7 @@ public class GameController
             
             onSpecialThreshold = (boardView) =>
             {
-                // faz a parte logica e me retorna os valores que eu preciso mandar pro boardview
+                // Gets the needed for boardview special tile view creation
                 (Vector2Int position, SpecialTile specialTile) = AddNewSpecialTile(addedTiles, _boardTiles);
                 boardView.CreateSpecialTileView(position, specialTile);
             };
@@ -258,7 +260,6 @@ public class GameController
             }
         }
 
-        // return AddNewSpecialTile(addedTiles, newBoard);
         return addedTiles;
     }
 
