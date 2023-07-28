@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -14,6 +16,7 @@ public class ScoreController : MonoBehaviour
 
     private int _score;
     private int _currentThreshold;
+    private Tween _comboTween;
 
     private void Start()
     {
@@ -26,10 +29,10 @@ public class ScoreController : MonoBehaviour
         _score += pointsPerTile * numberOfTiles * scoreMultiplier;
         scoreText.text = $"Score: {_score}";
 
-        if (scoreMultiplier > 1)
-            comboText.text = $"Combo x{scoreMultiplier}";
+        if (scoreMultiplier <= 1) return;
+        AddCombo(scoreMultiplier);
     }
-
+    
     public bool ReachedScoreThreshold()
     {
         bool reachedThreshold = _score >= _currentThreshold;
@@ -40,18 +43,24 @@ public class ScoreController : MonoBehaviour
 
         return reachedThreshold;
     }
-    
+
+    private void AddCombo(int scoreMultiplier)
+    {
+        comboText.text = $"Combo x{scoreMultiplier}";
+        DoComboTween(0.5F, () => {});
+    }
+
+
     public void ClearComboText()
     {
         if (comboText.text == string.Empty) return;
-        StartCoroutine(ClearComboTextRoutine());
+        DoComboTween(1.5F, () => comboText.text = string.Empty);
     }
 
-    private IEnumerator ClearComboTextRoutine()
+    private void DoComboTween(float duration, Action onComplete)
     {
-        yield return new WaitForSeconds(1.25F);
-        comboText.text = string.Empty;
+        _comboTween?.Kill();
+        _comboTween =  comboText.transform.DOShakePosition(duration, Vector3.one * 3F, 100, 15);
+        _comboTween.onComplete += () => onComplete();
     }
-
-    
 }
