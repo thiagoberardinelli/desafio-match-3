@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5a395bf00bbfe84e8896c915a55911a, type: 3}
   m_Name: TilePrefabRepository
   m_EditorClassIdentifier: 
-  tileViewPrefab: {fileID: 464270069896909277, guid: 6da72f952b966504ca2d1a009df6dfa4, type: 3}
+  tileViewPrefab: {fileID: 8012205972382045177, guid: 1097ca7f509e6fa4aadcb2b7e35e38ac, type: 3}
   colors:
   - {r: 0.69803923, g: 0, b: 0, a: 1}
   - {r: 1, g: 0.7960785, b: 0, a: 1}
