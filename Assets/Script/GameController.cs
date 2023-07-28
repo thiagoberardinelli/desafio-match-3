@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Script;
 using UnityEngine;
@@ -46,7 +47,7 @@ public class GameController
         return board;
     }
 
-    private void CreateSpecialTile(Vector2Int randomizedPosition, List<List<Tile>> board, int randomizedType = -1)
+    private SpecialTile CreateSpecialTile(Vector2Int randomizedPosition, List<List<Tile>> board, int randomizedType = -1)
     {
         // if x or y position is equal to -1, randomize a new position
         if (randomizedPosition.x == -1 || randomizedPosition.y == -1)
@@ -59,19 +60,22 @@ public class GameController
         
         // if randomizedType is equal to -1, randomize a special type
         int specialType = randomizedType == -1 ? Random.Range(0, _specialTilesTypes.Count) : randomizedType;
-        
-        board[randomizedPosition.y][randomizedPosition.x] = new SpecialTile(tile, specialType);
+
+        SpecialTile specialTile = new SpecialTile(tile, specialType);
+        board[randomizedPosition.y][randomizedPosition.x] = specialTile;
+
+        return specialTile;
     }
 
-    private List<AddedTileInfo> AddNewSpecialTile(List<AddedTileInfo> addedTiles, List<List<Tile>> newBoard)
+    private (Vector2Int, SpecialTile specialTile) AddNewSpecialTile(List<AddedTileInfo> addedTiles, List<List<Tile>> newBoard)
     {
         int index = Random.Range(0, addedTiles.Count);
         AddedTileInfo addedTileInfo = addedTiles[index];
         Vector2Int randomizedPosition = addedTileInfo.position;
         addedTileInfo.specialType = Random.Range(0, _specialTilesTypes.Count);
             
-        CreateSpecialTile(randomizedPosition, newBoard, addedTileInfo.specialType);
-        return addedTiles;
+        SpecialTile specialTile = CreateSpecialTile(randomizedPosition, newBoard, addedTileInfo.specialType);
+        return (randomizedPosition, specialTile);
     }
 
     private void CheckInitialMatches(List<int> tileTypes, int x, int y, List<List<Tile>> board)
@@ -125,8 +129,10 @@ public class GameController
         return false;
     }
 
-    public List<BoardSequence> SwapTile(int fromX, int fromY, int toX, int toY)
+    public List<BoardSequence> SwapTile(int fromX, int fromY, int toX, int toY, out Action<BoardView> onSpecialThreshold)
     {
+        onSpecialThreshold = null;
+        
         List<List<Tile>> newBoard = CopyBoard(_boardTiles);
 
         (newBoard[fromY][fromX], newBoard[toY][toX]) = (newBoard[toY][toX], newBoard[fromY][fromX]);
@@ -141,6 +147,13 @@ public class GameController
             List<MovedTileInfo> movedTilesList = MovedTilesList(matchedPosition, newBoard);
             // Filling the board with new tiles
             List<AddedTileInfo> addedTiles = GetAddedTiles(newBoard);
+            
+            onSpecialThreshold = (boardView) =>
+            {
+                // faz a parte logica e me retorna os valores que eu preciso mandar pro boardview
+                (Vector2Int position, SpecialTile specialTile) = AddNewSpecialTile(addedTiles, _boardTiles);
+                boardView.CreateSpecialTileView(position, specialTile);
+            };
 
             BoardSequence sequence = new BoardSequence
             {
@@ -150,7 +163,7 @@ public class GameController
             };
             boardSequences.Add(sequence);
         }
-
+        
         _boardTiles = newBoard;
         return boardSequences;
     }
@@ -245,7 +258,7 @@ public class GameController
             }
         }
 
-        return AddNewSpecialTile(addedTiles, newBoard);
+        // return AddNewSpecialTile(addedTiles, newBoard);
         return addedTiles;
     }
 

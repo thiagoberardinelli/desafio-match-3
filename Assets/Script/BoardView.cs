@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -146,16 +145,8 @@ public class BoardView : MonoBehaviour
             TileView tileView;
             TileSpotView tileSpot = _tileSpots[position.y][position.x];
 
-            if (addedTileInfo.specialType != -1)
-            {
-                SpecialTileView specialTileView = tilePrefabRepository.specialTilePrefabList[addedTileInfo.specialType];
-                tileView = Instantiate(specialTileView);
-            }
-            else
-            {
-                TileView tilePrefab = tilePrefabRepository.tileViewPrefab;
-                tileView = Instantiate(tilePrefab);
-            }
+            TileView tilePrefab = tilePrefabRepository.tileViewPrefab;
+            tileView = Instantiate(tilePrefab);
 
             tileView.SetColor(tilePrefabRepository.colors[addedTileInfo.type]);
             tileSpot.SetTile(tileView);
@@ -167,6 +158,19 @@ public class BoardView : MonoBehaviour
         }
 
         return seq;
+    }
+
+    public void CreateSpecialTileView(Vector2Int position, SpecialTile specialTile)
+    {
+        Destroy(_tiles[position.y][position.x].gameObject);
+        
+        TileSpotView tileSpot = _tileSpots[position.y][position.x];
+        SpecialTileView specialTileViewPrefab = tilePrefabRepository.specialTilePrefabList[specialTile.specialType];
+        SpecialTileView specialTileView = Instantiate(specialTileViewPrefab);
+        
+        specialTileView.SetColor(tilePrefabRepository.colors[specialTile.type]);
+        tileSpot.SetTile(specialTileView);
+        _tiles[position.y][position.x] = specialTileView;
     }
 
     private void OnTileSpotClick(int x, int y)

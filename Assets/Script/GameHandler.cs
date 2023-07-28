@@ -10,7 +10,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private int boardWidth = 10;
     [SerializeField] private int boardHeight = 10;
     [SerializeField] private BoardView boardView;
-    [SerializeField] private ScoreController hudController;
+    [SerializeField] private ScoreController scoreController;
 
     private int selectedX, selectedY = -1;
     private bool isAnimating;
@@ -51,11 +51,17 @@ public class GameHandler : MonoBehaviour
                     }
                     else
                     {
-                        List<BoardSequence> swapResult = gameController.SwapTile(selectedX, selectedY, x, y);
+                        List<BoardSequence> swapResult = gameController.SwapTile(selectedX, selectedY, x, y, out Action<BoardView> createSpecialTile);
+                        
                         AnimateBoard(swapResult, 0, () =>
                         {
-                            hudController.ClearComboText();
+                            scoreController.ClearComboText();
                             isAnimating = false;
+                            
+                            // Se, no fim do combo, voce passou do threshold invoca a assim passando o boardview
+                            // Porque eu preciso do boardView? Para pode fazer a parte visual alem da logica porque no GC eu nao tenho como
+                            if (scoreController.ReachedScoreThreshold())
+                                createSpecialTile.Invoke(boardView);
                         });
                     }
 
@@ -81,7 +87,8 @@ public class GameHandler : MonoBehaviour
         sequence.Append(boardView.CreateTile(boardSequence.addedTiles));
 
         sequenceIndex++;
-        hudController.AddScore(boardSequence.matchedPosition.Count, sequenceIndex);
+        scoreController.AddScore(boardSequence.matchedPosition.Count, sequenceIndex);
+        
         if (sequenceIndex< boardSequences.Count)
         {
             sequence.onComplete += () => AnimateBoard(boardSequences, sequenceIndex, onComplete);
