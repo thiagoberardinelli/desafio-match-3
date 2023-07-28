@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class TileView : MonoBehaviour
 {
-    [SerializeField] private Image image;
+    [SerializeField] protected Image image;
     [SerializeField] private ParticleSystem particleSystemPrefab;
 
     public void Explode()

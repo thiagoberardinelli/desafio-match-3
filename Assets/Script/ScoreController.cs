@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class ScoreController : MonoBehaviour
@@ -32,7 +33,9 @@ public class ScoreController : MonoBehaviour
     public bool ReachedScoreThreshold()
     {
         bool reachedThreshold = _score >= _currentThreshold;
-        _currentThreshold = pointsToReachScore + _score;
+        
+        if (reachedThreshold)
+            _currentThreshold = pointsToReachScore + _score;
         Debug.Log(_currentThreshold);
 
         return reachedThreshold;
