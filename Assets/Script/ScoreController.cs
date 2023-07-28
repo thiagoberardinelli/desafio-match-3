@@ -40,10 +40,18 @@ public class ScoreController : MonoBehaviour
 
         return reachedThreshold;
     }
-
+    
     public void ClearComboText()
     {
         if (comboText.text == string.Empty) return;
+        StartCoroutine(ClearComboTextRoutine());
+    }
+
+    private IEnumerator ClearComboTextRoutine()
+    {
+        yield return new WaitForSeconds(1.25F);
         comboText.text = string.Empty;
     }
+
+    
 }
