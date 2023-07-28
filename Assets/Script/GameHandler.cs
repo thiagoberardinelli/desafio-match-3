@@ -10,7 +10,10 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private int boardWidth = 10;
     [SerializeField] private int boardHeight = 10;
     [SerializeField] private BoardView boardView;
+    
+    [Header("Controllers")]
     [SerializeField] private ScoreController scoreController;
+    [SerializeField] private AudioController audioController;
 
     private int selectedX, selectedY = -1;
     private bool isAnimating;
@@ -87,6 +90,7 @@ public class GameHandler : MonoBehaviour
 
         sequenceIndex++;
         scoreController.AddScore(boardSequence.matchedPosition.Count, sequenceIndex);
+        audioController.PlaySound("Match_SFX", sequenceIndex);
         
         if (sequenceIndex< boardSequences.Count)
         {
